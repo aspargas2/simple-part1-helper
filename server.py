@@ -14,7 +14,11 @@ def verify_fc(fc):
     return hashlib.sha1(struct.pack('<L', principal_id)).digest()[0] >> 1 == checksum
 
 def readd(clientsocket):
-  print("Hello from the read thread!")
+  print("Hello from the readd thread!")
+  try:
+    mkdir("part1s")
+  except:
+    pass
   while True:
     #print("In read loop")
     fc = int.from_bytes(clientsocket.recv(8), 'little')
@@ -23,17 +27,17 @@ def readd(clientsocket):
     id0 = fcid0dict[fc]
     print("\nGot LFCS for %d %s" % (fc, id0))
     try:
-      mkdir(id0)
+      mkdir("part1s/%d_%s" % (fc, id0))
     except:
       pass
-    f = open("%s/movable_part1.sed" % id0, 'wb')
+    f = open("part1s/%d_%s/movable_part1.sed" % (fc, id0), 'wb')
     f.write(b'\x00' * 4096)
     f.seek(0)
     f.write(lfcs)
     f.seek(16)
     f.write(bytes(id0, 'ascii'))
     f.close()
-    print("Written to %s/movable_part1.sed" % id0)
+    print("Written to part1s/%d_%s/movable_part1.sed" % (fc, id0))
 
 serversocket.bind(("", port))
 serversocket.listen(5)
