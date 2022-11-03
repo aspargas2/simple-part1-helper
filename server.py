@@ -66,7 +66,7 @@ while True:
   if not verify_fc(fc):
     print("That's an invalid FC")
     continue
-  id0 = input("Enter the cooresponding id0: ")
+  id0 = input("Enter the cooresponding id0: ").replace(" ", "")
   if len(id0) != 32:
     print("That doesn't look like an id0")
     continue
